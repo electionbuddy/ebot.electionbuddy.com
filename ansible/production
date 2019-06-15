@@ -1,0 +1,6 @@
+[production]
+52.60.224.197
+
+[production:vars]
+stage=production
+hostname=ebot.electionbuddy.com

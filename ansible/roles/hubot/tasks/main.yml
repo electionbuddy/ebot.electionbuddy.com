@@ -1,0 +1,8 @@
+---
+- name: Set up the SystemD job for Hubot
+  copy: src=hubot.service dest=/lib/systemd/system/hubot.service
+  notify: restart nginx
+
+- name: Configure Hubot for start on boot
+  command: systemctl enable hubot.service
+  become: true

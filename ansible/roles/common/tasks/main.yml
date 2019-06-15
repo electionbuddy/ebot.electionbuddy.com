@@ -1,0 +1,48 @@
+---
+- name: Install the basics
+  apt: pkg={{ item }} state=latest update_cache=yes cache_valid_time=3600
+  with_items:
+    - git
+    - nodejs # For compiling Coffeescript.
+    - ruby
+    - python-pycurl
+    - build-essential
+    - libcurl4-openssl-dev
+    - zlib1g-dev
+    - libssl-dev
+    - libreadline6-dev
+    - libyaml-dev
+    - libpcre3 # For nginx to use regexes.
+    - libpcre3-dev
+    - unattended-upgrades
+
+- name: Remove landscape-common
+  apt: name={{ item }} state=absent
+  with_items:
+    - landscape-common
+    - landscape-client
+
+# - name: Autoremove cruft
+#   shell: "apt-get autoremove"
+#   become: true
+
+- name: Set hostname
+  hostname: name={{ hostname }}
+
+- name: Create and chmod the EBot directory
+  shell: "mkdir -p /var/hubot && chown deploy:admin /var/hubot && chmod a+s /var/hubot"
+  become: true
+
+- name: Copy enabling config for unattended-upgrades
+  copy: src=20auto-upgrades dest=/etc/apt/apt.conf.d/20auto-upgrades
+
+- name: Copy configuration for unattended-upgrades
+  copy: src=50unattended-upgrades dest=/etc/apt/apt.conf.d/50unattended-upgrades
+
+- name: Set /etc/timezone
+  shell: echo 'UTC' > /etc/timezone
+  become: true
+
+- name: Reconfigure timezone
+  command: dpkg-reconfigure -f noninteractive tzdata
+  become: true

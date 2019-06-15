@@ -1,0 +1,19 @@
+---
+- name: Install Redis
+  apt: pkg={{ item }} state=present update_cache=yes cache_valid_time=3600
+  with_items:
+    - redis-server
+
+- name: Start Redis
+  service: name=redis-server state=started enabled=true
+
+- name: Copy Redis Config
+  copy: src=redis-{{ stage }}.conf dest=/etc/redis/
+  notify:
+  - restart redis
+
+- name: Make sysctl changes recommended for Redis so we don't run out of file descriptors (overcommit_memory)
+  action: lineinfile dest=/etc/sysctl.conf regexp="vm.overcommit_memory" line="vm.overcommit_memory = 1" state=present
+
+- name: Make sysctl changes recommended for Redis so we don't run out of file descriptors (somaxconn)
+  action: lineinfile dest=/etc/sysctl.conf regexp="net.core.somaxconn" line="net.core.somaxconn = 1024" state=present

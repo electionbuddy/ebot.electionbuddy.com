@@ -1,0 +1,36 @@
+---
+- ufw:
+    state: enabled
+    policy: deny
+
+# Set logging
+- ufw:
+    logging: on
+
+# ufw supports connection rate limiting, which is useful for protecting
+# against brute-force login attacks. ufw will deny connections if an IP
+# address has attempted to initiate 6 or more connections in the last
+# 30 seconds. See  http://www.debian-administration.org/articles/187
+# for details. Typical usage is:
+- ufw:
+    rule: limit
+    port: ssh
+    proto: tcp
+
+# # Allow all access to tcp port 80:
+# - ufw:
+#     rule: allow
+#     port: 80
+#     proto: tcp
+
+# # Allow all access to tcp port 80:
+# - ufw:
+#     rule: allow
+#     port: 25
+#     proto: tcp
+
+# # Allow all access to tcp port 80:
+# - ufw:
+#     rule: allow
+#     port: 443
+#     proto: tcp

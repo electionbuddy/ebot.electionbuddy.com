@@ -1,0 +1,23 @@
+; Hubot systemd service unit file
+; Place in e.g. `/etc/systemd/system/hubot.service`, then `systemctl daemon-reload` and `service hubot start`.
+
+[Unit]
+Description=Hubot
+Requires=network.target
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/var/hubot/ebot.electionbuddy.com
+User=deploy
+
+Restart=always
+RestartSec=10
+
+; Alternatively multiple environment variables can loaded from an external file
+EnvironmentFile=/var/hubot/ebot.electionbuddy.com/.env
+
+ExecStart=/var/hubot/ebot.electionbuddy.com/bin/hubot --adapter slack
+
+[Install]
+WantedBy=multi-user.target

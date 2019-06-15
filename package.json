@@ -1,10 +1,11 @@
 {
   "name": "EBot",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "private": true,
   "author": "Brady Bouchard <brady@thewellinspired.com>",
   "description": "ElectionBuddy's ChatOps Bot",
   "dependencies": {
+    "dotenv": "^8.0.0",
     "hubot": "^3.3.2",
     "hubot-diagnostics": "^1.0.0",
     "hubot-google-images": "^0.2.7",
